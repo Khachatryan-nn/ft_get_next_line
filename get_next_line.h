@@ -6,7 +6,7 @@
 /*   By: tikhacha <tikhacha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 15:32:03 by tikhacha          #+#    #+#             */
-/*   Updated: 2023/02/21 15:14:09 by tikhacha         ###   ########.fr       */
+/*   Updated: 2023/02/22 17:27:09 by tikhacha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define GET_NEXT_LINE
 
 #ifndef BUFFER_SIZE
-# define BUFFER_SIZE 100
+# define BUFFER_SIZE 10
 
 #include <stdlib.h>
 #include <stdarg.h>
