@@ -6,7 +6,7 @@
 /*   By: tikhacha <tikhacha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 15:57:43 by tikhacha          #+#    #+#             */
-/*   Updated: 2023/02/22 20:42:34 by tikhacha         ###   ########.fr       */
+/*   Updated: 2023/02/23 12:59:44 by tikhacha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,45 +14,45 @@
 #include <stdio.h>
 #include <string.h>
 
-int	that_next_line(int fd, char *buffer, char **line, char **backup, int i)
+char	*find_next_line(int fd, char *backup, char *buffer)
 {
-	int	len;
+	int		len;
+	char	*temp;
 
-	i = 0;
-	printf("this function was called and backup contains(before):%s!\n", *backup);
-	len = ft_strlen(*backup);
-	len += read(fd, buffer, BUFFER_SIZE);
-//	printf("this function read file: buffer = %s\n", buffer);
-	*backup = ft_strjoin(*backup, buffer);
-	free(buffer);
-	buffer = 0;
-	printf("this function allocated memory for backup and gived him right value. backup = %s len = %d\n", *backup, len);
-	while (i < len && *backup[i] != '\n' && *backup[i] != '\0')
-		i++;
-//	printf("this function coutned symbols before reaching to \\n or \\0: i = %d len = %d\n", i, len);
-	if ((*backup[i] != '\n' || *backup[i] != '\0') && i == len)
+	len = 0;
+	while (1)
 	{
+		len = read(fd, buffer, BUFFER_SIZE);
+		printf("We have read file and save string in buffer:%s\n", buffer);
+		if (len == -1)
+			return (0);
+		else if (len == 0)
+			break;
+		buffer[len] = '\0';
+		ft_strjoin(backup, buffer);
+		printf("We created a new value for backup from buffer string: %s\n", backup);
 		free(buffer);
 		buffer = 0;
-		buffer = (char *)malloc(BUFFER_SIZE + 1);
-		if (!buffer)
-			return (0);
-		that_next_line(fd, buffer, line, backup, i);
-		return 0;
+		if (ft_strchr(backup, '\n'))
+			break;
 	}
-	*line = ft_substr(*backup, 0, i);
-//	printf("this function reaches to \\n or \\0 and received a new string: %s\n", line);
-	buffer = ft_substr(*backup, i + 1, ft_strlen(*backup) - i - 1);
-//	printf("this function makes copy of backup: %s\n", backup);
-	free(*backup);
-//	printf("this function free backup\n");
-	*backup = ft_substr(buffer, 0, ft_strlen(buffer));
-	printf("this function creates new backup with excess symbols:%s\n",* backup);
-	free(buffer);
-	buffer = 0;
-	return 1;
+	return (backup);
 }
 
+char	*exclude_excess_part(char *backup, int i)
+{
+	char	*temp;
+	int		len;
+
+	len = ft_strlen(backup);
+	temp = ft_substr(backup, i, len);
+	free(backup);
+	backup = 0;
+	backup = ft_substr(temp, 0, BUFFER_SIZE);
+	free(temp);
+	temp = 0;
+	return (backup);
+}
 
 char	*get_next_line(int fd)
 {
@@ -67,14 +67,22 @@ char	*get_next_line(int fd)
 	buffer = (char *)malloc(BUFFER_SIZE + 1);
 	if (!buffer)
 		return (NULL);
-	backup = ft_strdup("");
-	that_next_line(fd, buffer, &line, &backup, i);
+    if (!backup)
+        backup = ft_strdup("");
+	backup = find_next_line(fd, backup, buffer);
+	printf("Backup received value:%s\n", backup);
+	while (backup[i] != '\0')
+		i++;
+	line = ft_substr(backup, 0, i);
+	backup = exclude_excess_part(backup, i);
 	return (line);
 }
 
 int	main(void)
 {
 	int	fd1 = open("text.txt", O_RDONLY);
+	int	fd2 = open("get_next_line.c", O_RDONLY);
+	printf("								result of function:%s\n", get_next_line(fd1));
 	printf("								result of function:%s\n", get_next_line(fd1));
 	printf("								result of function:%s\n", get_next_line(fd1));
 	printf("								result of function:%s\n", get_next_line(fd1));

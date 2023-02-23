@@ -6,7 +6,7 @@
 /*   By: tikhacha <tikhacha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 13:39:23 by tikhacha          #+#    #+#             */
-/*   Updated: 2023/02/22 17:35:30 by tikhacha         ###   ########.fr       */
+/*   Updated: 2023/02/23 01:32:18 by tikhacha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,4 +89,17 @@ char    *ft_strdup(const char *s1)
         }   
         p[i] = '\0';
         return (p);
+}
+
+char    *ft_strchr(const char *s, int c)
+{
+        while (*s)
+        {
+                if ((char) c == *s)
+                        return ((char *)s);
+                s++;
+        }
+        if ((char) c == *s)
+                return ((char *)s);
+        return (NULL);
 }
