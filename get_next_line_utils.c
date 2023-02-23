@@ -6,11 +6,21 @@
 /*   By: tikhacha <tikhacha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 13:39:23 by tikhacha          #+#    #+#             */
-/*   Updated: 2023/02/23 01:32:18 by tikhacha         ###   ########.fr       */
+/*   Updated: 2023/02/23 19:17:42 by tikhacha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+
+int     ft_strlen(const char *s) 
+{
+        int     i;  
+
+        i = 0;
+        while (s[i] != '\0')
+                i++;
+        return (i);
+}
 
 char    *ft_strjoin(char const *s1, char const *s2)
 {
@@ -61,16 +71,6 @@ char    *ft_substr(char const *s, unsigned int start, size_t len)
         }   
         p[i] = '\0';
         return (p);
-}
-
-int     ft_strlen(const char *s) 
-{
-        int     i;  
-
-        i = 0;
-        while (s[i] != '\0')
-                i++;
-        return (i);
 }
 
 char    *ft_strdup(const char *s1)
