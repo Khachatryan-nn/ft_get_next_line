@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tikhacha <tikhacha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/20 15:57:43 by tikhacha          #+#    #+#             */
-/*   Updated: 2023/02/27 16:29:12 by tikhacha         ###   ########.fr       */
+/*   Created: 2023/02/27 10:16:07 by tikhacha          #+#    #+#             */
+/*   Updated: 2023/02/27 16:46:27 by tikhacha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 static char	*find_next_line(int fd, char *buffer, char *backup)
 {
@@ -64,18 +64,18 @@ char	*get_next_line(int fd)
 {
 	char		*line;
 	char		*buf;
-	static char	*backup;
+	static char	*backup[OPEN_MAX];
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (0);
 	buf = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (!buf)
 		return (0);
-	line = find_next_line(fd, buf, backup);
+	line = find_next_line(fd, buf, backup[fd]);
 	free(buf);
 	buf = NULL;
 	if (!line)
 		return (NULL);
-	backup = del_excess_part(line);
+	backup[fd] = del_excess_part(line);
 	return (line);
 }
